@@ -4156,6 +4156,33 @@ function InterimElementProvider() {
         }
       }
 
+       /*
+       * @ngdoc method
+       * @name $$interimElement.$service#getSpecificOrPop
+       * @kind function
+       *
+       * @description
+       * finds a specific `$interimElement` or pop the last one if no scope id is passed
+       *
+       * @param {context} the options sent to the cancel order
+       * @returns the `$interimElement`
+       *
+       */
+      function getSpecificOrPop(context){
+        if(context && context.scopeId){
+          var item = showingInterims.find(function(interm){
+            return interm.options.scope.$id ===  context.scopeId;
+          });
+          if(item){
+            showingInterims = showingInterims.filter(function(){
+              return interm.options.scope.$id !==  context.scopeId;
+            })
+            return item;
+          }
+        }
+        return showingInterims.pop();
+      }
+
       /*
        * @ngdoc method
        * @name $$interimElement.$service#cancel
@@ -4169,7 +4196,7 @@ function InterimElementProvider() {
        *
        */
       function cancel(reason, options) {
-        var interim = showingInterims.pop();
+        var interim = getSpecificOrPop(options);
         if (!interim) {
           return $q.when(reason);
         }
