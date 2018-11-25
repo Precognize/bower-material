@@ -4174,7 +4174,7 @@ function InterimElementProvider() {
             return interm.options.scope.$id ===  context.scopeId;
           });
           if(item){
-            showingInterims = showingInterims.filter(function(){
+            showingInterims = showingInterims.filter(function(interm){
               return interm.options.scope.$id !==  context.scopeId;
             })
             return item;
